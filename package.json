@@ -5,14 +5,16 @@
   "scripts": {
     "dev": "CHOKIDAR_USEPOLLING=true astro dev",
     "start": "CHOKIDAR_USEPOLLING=true astro dev",
-    "diagrams": "likec4 export png --flat -o public/diagrams ./model",
-    "build": "npm run diagrams && astro build",
+    "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/react": "^6.0.0",
     "@astrojs/starlight": "^0.41.1",
     "astro": "^7.0.2",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
     "sharp": "^0.34.5"
   },
   "devDependencies": {

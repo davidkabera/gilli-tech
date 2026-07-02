@@ -2,6 +2,8 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
+import react from '@astrojs/react';
+import { LikeC4VitePlugin } from 'likec4/vite-plugin';
 import { rehypeBaseLinks } from './src/plugins/rehype-base-links.mjs';
 
 const base = '/gilli-tech';
@@ -19,6 +21,11 @@ export default defineConfig({
 				usePolling: true,
 			},
 		},
+		plugins: [
+			LikeC4VitePlugin({
+				workspace: './model',
+			}),
+		],
 	},
 	integrations: [
 		starlight({
@@ -54,5 +61,6 @@ export default defineConfig({
 				},
 			],
 		}),
+		react(),
 	],
 });
