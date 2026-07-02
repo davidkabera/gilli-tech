@@ -4,7 +4,7 @@ import starlight from '@astrojs/starlight';
 
 import { rehypeBaseLinks } from './src/plugins/rehype-base-links.mjs';
 
-const base = '/gili-tech';
+const base = '/gilli-tech';
 
 // https://astro.build/config
 export default defineConfig({

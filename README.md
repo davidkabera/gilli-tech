@@ -54,7 +54,7 @@ your repo, e.g.:
 ```js
 export default defineConfig({
   site: 'https://davidkabera.github.io',
-  base: '/gili-tech',
+  base: '/gilli-tech',
   integrations: [starlight({ /* ... */ })],
 });
 ```
