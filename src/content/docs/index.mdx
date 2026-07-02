@@ -1,0 +1,43 @@
+---
+title: Gillytech
+description: Architecture documentation for Gillytech — a collaborative STEM reasoning platform for CBC classrooms.
+template: splash
+hero:
+  tagline: A reasoning-first, real-time collaborative STEM platform for Kenyan CBC classrooms — architecture documentation.
+  actions:
+    - text: Read the Case Study
+      link: /gili-tech/requirements/case-study/
+      icon: right-arrow
+    - text: View the Architectural Style
+      link: /gili-tech/architecture/as/
+      icon: document
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Overview
+
+Gillytech is a full-stack web application for live, collaborative STEM
+reasoning in CBC (Competency-Based Curriculum) classrooms. Students must
+write their reasoning *before* answer options unlock, discuss with a small
+group in real time, and submit — with all scoring computed and verified
+server-side.
+
+This site documents the requirements, architecturally significant
+requirements (ASRs), architectural style, and architectural decision
+records (ADRs) behind the system.
+
+<CardGrid stagger>
+	<Card title="Requirements" icon="document">
+		Case study, ASR mapping, acceptance criteria, and the full SRS.
+	</Card>
+	<Card title="Architecture" icon="puzzle">
+		The chosen architectural style — a layered modular monolith with an
+		event-driven real-time overlay — and why it fits.
+	</Card>
+	<Card title="ADRs" icon="approve-check">
+		Five architectural decision records covering the monolith, auth,
+		WebSocket scoping, data access, and analytics strategy.
+	</Card>
+</CardGrid>

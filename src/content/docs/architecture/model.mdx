@@ -1,0 +1,65 @@
+---
+title: System Model (C4)
+description: Gillytech's system context and container views, modeled as code with LikeC4.
+---
+
+import LikeC4View from '../../../components/LikeC4View.astro';
+
+This model is **Architecture as Code**: the diagrams below are generated
+directly from `model/gillytech.c4`, a LikeC4 source file checked into the
+repository alongside the rest of this documentation. There is no
+separately maintained image to go stale — if the architecture changes,
+the model file changes, and these views update with it.
+
+It should be read alongside [Architectural Style](/architecture/as/) (the
+narrative rationale) and the [ADRs](/adrs/adr-001/) (the individual
+decisions this model reflects).
+
+## System Landscape
+
+Who uses Gillytech, and how they connect to it.
+
+<LikeC4View viewId="index" />
+
+## System Context
+
+Gillytech treated as a single system — useful for explaining the platform
+to someone who doesn't need the internal container split yet.
+
+<LikeC4View viewId="context" />
+
+## Container View
+
+What's actually inside Gillytech. This is the level the ADRs operate at:
+
+- **Web Frontend** — the React/Vite single-page app.
+- **Backend** — the modular monolith ([ADR-001](/adrs/adr-001/)): REST
+  routes, the shared JWT auth middleware ([ADR-002](/adrs/adr-002/)), and
+  the in-process WebSocket broadcast layer ([ADR-003](/adrs/adr-003/)),
+  all in one process.
+- **Data Store** — lowdb (JSON), accessed only through the repository
+  module ([ADR-004](/adrs/adr-004/)), which is the seam a future
+  PostgreSQL migration would use.
+
+Note the frontend↔backend relationship is split into **two** edges — REST
+and WebSocket — rather than one generic "uses" arrow. That split isn't
+decorative: it's the same distinction ASR-01/ASR-03 (REST, request/response,
+tight latency) and ASR-02/ASR-06/ASR-07 (WebSocket, event-driven, group-
+scoped) draw throughout the [ASR Mapping](/requirements/asr/) and
+[Architectural Style](/architecture/as/) documents.
+
+<LikeC4View viewId="containers" />
+
+## What isn't modeled yet
+
+This is a two-level model (System Context → Containers) covering the ADRs
+already written. It deliberately stops short of:
+
+- **Component-level detail** inside the backend (e.g. individual route
+  modules, the connection registry) — the ADRs describe these in prose;
+  promoting them into the model is worth doing if the backend grows past
+  what ADR-001 currently scopes.
+- **Deployment view** — there's no deployment model yet because SRS §5.4
+  Availability states no formal SLA exists for v1 (single-school pilot);
+  a deployment view becomes more useful once ADR-001's "revisit trigger"
+  (scaling beyond one process) is actually hit.

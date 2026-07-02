@@ -1,0 +1,89 @@
+specification {
+  element actor {
+    style {
+      shape person
+      color muted
+    }
+  }
+  element system {
+    style {
+      color primary
+    }
+  }
+  element container
+}
+
+model {
+  student = actor 'Student' {
+    description 'A CBC learner who joins a live session, submits reasoning-first answers, and chats within their group'
+  }
+  teacher = actor 'Teacher' {
+    description 'Authors sessions and questions, runs sessions live, monitors groups, and reviews analytics'
+  }
+  administrator = actor 'Administrator' {
+    description 'Views platform-wide statistics across teachers, classes, and sessions'
+  }
+
+  gillytech = system 'Gillytech' {
+    description 'Collaborative STEM Reasoning Platform (CSRP) — real-time, reasoning-first quizzes for CBC classrooms'
+
+    frontend = container 'Web Frontend' {
+      description 'Single-page app: login, student session flow, teacher dashboard, live monitor, analytics'
+      technology 'React, Vite'
+      style {
+        shape browser
+      }
+    }
+
+    backend = container 'Backend' {
+      description 'Modular monolith: REST routes, JWT auth middleware, WebSocket broadcast layer, repository data access (ADR-001)'
+      technology 'Node.js, Express, ws'
+    }
+
+    database = container 'Data Store' {
+      description 'Single JSON document store, accessed only through the repository module (ADR-004); planned migration target is PostgreSQL'
+      technology 'lowdb (JSON file)'
+      style {
+        shape storage
+      }
+    }
+
+    frontend -> backend 'Authenticates, manages sessions/questions, submits answers, requests analytics' {
+      technology 'HTTPS / JSON (REST)'
+    }
+    frontend -> backend 'Sends/receives chat, presence, question-advance, and session-update events' {
+      technology 'WebSocket (JWT on connect, ADR-002)'
+    }
+    backend -> database 'Reads and writes users, classes, sessions, questions, submissions, chat messages' {
+      technology 'db.read() / db.write() via repository module (ADR-004)'
+    }
+  }
+
+  student -> gillytech.frontend 'Joins a session by class code, writes reasoning, answers, and chats with group'
+  teacher -> gillytech.frontend 'Builds sessions, runs them live, monitors groups, reviews analytics'
+  administrator -> gillytech.frontend 'Reviews platform-wide overview'
+}
+
+views {
+  view index {
+    title 'Gillytech — System Landscape'
+    description 'Students, teachers, and administrators interacting with the Gillytech platform.'
+
+    include *
+  }
+
+  view context of gillytech {
+    title 'Gillytech — System Context'
+    description 'Gillytech as a single system, and who uses it. See the Container view for what is inside.'
+
+    include student, teacher, administrator, gillytech
+    exclude gillytech.*
+  }
+
+  view containers of gillytech {
+    title 'Gillytech — Container View'
+    description 'Inside Gillytech: the web frontend, the backend modular monolith (ADR-001), and the data store (ADR-004). REST and WebSocket are shown as separate relationships because they carry different concerns — see ADR-002 and ADR-003.'
+
+    include *
+  }
+}
